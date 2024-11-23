@@ -43,6 +43,20 @@ def list_books():
         print(book)
     conn.close()
 
+def update_book(id,title,author,publisher,year_of_publication):
+    conn = connect_to_database()
+    cursor=conn.cursor()
+    cursor.execute("""UPDATE books SET title=?,author=?,publisher=?,year_of_publication=? 
+                    WHERE id=?""",(title,author,publisher,year_of_publication,id))
+    conn.commit()
+    conn.close()
+
+def delete(id):
+    conn = connect_to_database()
+    cursor=conn.cursor()
+    cursor.execute("DELETE FROM books WHERE id=?",(id))
+    conn.commit()
+    conn.close()
 
 def menu():
     while True:
