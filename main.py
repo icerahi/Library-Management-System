@@ -2,7 +2,10 @@ import menus
 from functions import (
     borrow_book,
     add_author,
-    list_of_author,)
+    list_of_author,
+    add_book,
+    list_of_books,
+    )
 
 
 def main():
@@ -17,7 +20,7 @@ def main():
         elif option == 2 :
             print("Return Book")
         elif option ==3:
-            print("List of Books")
+            list_of_books()
         
         elif option==4:
             list_of_author()
@@ -32,12 +35,15 @@ def main():
             while True:
                 option=int(input(menus.SUB_MENU_MANAGE_BOOK))
                 if option ==1:
-                    print("add a single book")
-                elif option==2:
-                    print("add a list of book")
-                elif option ==3:
+                    title=input("Enter Book Title:")
+                    genre=input("Enter Book Genre:")
+                    author_id=int(input('Enter Author ID:')) 
+                    copies=int(input("Enter Number of Copies:"))
+                    add_book(title,genre,author_id,copies)
+                    
+                elif option ==2:
                     print('Update a book')
-                elif option ==4:
+                elif option ==3:
                     print("delete a book")
                 elif option ==0:
                     break
@@ -50,8 +56,6 @@ def main():
             name= str(input("Enter an Author Name or List:"))
             add_author(name)
                
-            print("_____________________________")
-
         elif option ==9:
             print("add a new borrower")
 
@@ -59,6 +63,7 @@ def main():
             break 
         else:
             print("Invalid selection!!")
-        print('_______________________________________________________________')
+
+        print('``````````````````````````````````````````````')
 
 main()
