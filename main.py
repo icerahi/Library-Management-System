@@ -1,6 +1,8 @@
-import database 
 import menus
-
+from functions import (
+    borrow_book,
+    add_author,
+    list_of_author,)
 
 
 def main():
@@ -9,12 +11,24 @@ def main():
         option=int(input())
 
         if option == 1 :
+            book_id=int(input())
+            borrow_book(1,1)
             print ("Borrow Book")
         elif option == 2 :
             print("Return Book")
         elif option ==3:
             print("List of Books")
-        elif option == 4:
+        
+        elif option==4:
+            list_of_author()
+
+        elif option ==5:
+            print("List of borrowers")
+
+        elif option==6:
+            print("search book")
+
+        elif option == 7:
             while True:
                 option=int(input(menus.SUB_MENU_MANAGE_BOOK))
                 if option ==1:
@@ -30,27 +44,17 @@ def main():
                 else:
                     print("Invalid choice!")
                 print("_____________________________")
-        elif option==5:
-            print("list of author")
 
-        elif option ==6:
-            while True:
-                print(menus.SUB_MENU_MANAGE_AUTHOR)
-                option=int(input())
-                if option ==1:
-                    print("add an author")
-                elif option==2:
-                    print("add a list of author")
-                elif option ==0:
-                    break
-                else:
-                    print("Invalid choice!")
-        elif option ==7:
-            print("add a new borrower")
         elif option ==8:
-            print("List of borrowers")
-        elif option==9:
-            print("search book")
+           
+            name= str(input("Enter an Author Name or List:"))
+            add_author(name)
+               
+            print("_____________________________")
+
+        elif option ==9:
+            print("add a new borrower")
+
         elif option==0:
             break 
         else:

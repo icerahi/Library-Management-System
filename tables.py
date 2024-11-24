@@ -1,22 +1,22 @@
 CREATE_AUTHOR_TABLE="""
-    CREATE TABLE AUTHOR(
+    CREATE TABLE IF NOT EXISTS AUTHOR(
         id INTEGER PRIMARY KEY,
         name TEXT)
 """
 
 CREATE_BOOKS_TABLE="""
-    CREATE TABLE BOOKS(
+    CREATE TABLE IF NOT EXISTS BOOKS(
         id INTEGER PRIMARY KEY,
         title TEXT,
         genre TEXT,
-        author_id=INTEGER,
+        author_id INTEGER,
         copies INTEGER,
-        FOREIGNKEY(author_id) REFERENCES AUTHOR(id) 
+        FOREIGN KEY (author_id) REFERENCES AUTHOR(id) 
         )
 """
 
 CREATE_BORROWER_TABLE="""
-    CREATE TABLE BORROWER(
+    CREATE TABLE IF NOT EXISTS BORROWER(
         id INTEGER PRIMARY KEY,
         name TEXT,
         email TEXT
@@ -24,13 +24,13 @@ CREATE_BORROWER_TABLE="""
     """
     
 CREATE_BORROW_RECORD_TABLE="""
-    CREATE TABLE BORROW_RECORD(
+    CREATE TABLE IF NOT EXISTS BORROW_RECORD(
         id INTEGER PRIMARY KEY,
         book_id INTEGER,
         borrower_id INTEGER,
         borrow_date TEXT,
-        return_date TEXT
+        return_date TEXT,
         FOREIGN KEY (book_id) REFERENCES BOOKS(id),
-        FOREIGN KEY (borrower_id) REFERENCE BORROWER(id)
+        FOREIGN KEY (borrower_id) REFERENCES BORROWER(id)
         )
     """
