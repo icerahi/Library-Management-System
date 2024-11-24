@@ -5,6 +5,8 @@ from functions import (
     list_of_author,
     add_book,
     list_of_books,
+    update_book,
+    delete_book,
     )
 
 
@@ -42,9 +44,20 @@ def main():
                     add_book(title,genre,author_id,copies)
                     
                 elif option ==2:
-                    print('Update a book')
+                    id=int(input("Enter ID which book details you want to update:"))
+                    print("If you don't want to change leave it Empty!")
+                    title=input("Title:")
+                    genre=input("Genre:")
+                    author_id=input("Author ID:")
+                    copies=input("Available Copies:")
+                    update_book(title,genre,author_id,copies,id)
+                    break
+
                 elif option ==3:
-                    print("delete a book")
+                    id=input("Enter the Book ID which you want to Deleted: ")
+                    if id:
+                        delete_book(id)
+                        
                 elif option ==0:
                     break
                 else:

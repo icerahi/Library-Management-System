@@ -55,12 +55,39 @@ def list_of_books():
 
 
 
-def update_book():
-    pass 
+def update_book(title,genre,author_id,copies,id):
+    conn=connect_to_db()
+    cursor=conn.cursor()
+    try:
+        cursor.execute("""UPDATE BOOKS SET 
+        title=COALESCE(NULLIF(?,""),title),
+        genre=COALESCE(NULLIF(?,""),genre),
+        author_id=COALESCE(NULLIF(?,""),author_id),
+        copies=COALESCE(NULLIF(?,""),copies)
+        WHERE id=?""",(title,genre,author_id,copies,id))
 
-def delete_book():
-    pass 
+        conn.commit()
 
+        message(f"""ID- '{id}' Book updated!""","Success")
+
+    except Exception as e:
+        conn.rollback()
+        message(e,"fail")
+    conn.close()
+
+def delete_book(id):
+    conn=connect_to_db()
+    cursor=conn.cursor()
+
+    try:
+        cursor.execute("DELETE FROM BOOKS WHERE id=?",(id,))
+        conn.commit()
+        message(f"""ID- '{id}' Book deleted!""","Success")
+
+    except Exception as e:
+        conn.rollback()
+        message(e,"fail")
+    conn.close()
 
 #manage author
 def add_author(name):

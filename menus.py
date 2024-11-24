@@ -22,8 +22,8 @@ SUB_MENU_MANAGE_BOOK="""
 |    -- Manage Book --        |
 |    Select your option:      |
 |    1.Add a single book      |
-|    3.Update a book          |
-|    4.delete a book          |
+|    2.Update a book          |
+|    3.delete a book          |
 |    0. Go Back               |
 +_____________________________+
 ~    Enter Your Selection :"""
