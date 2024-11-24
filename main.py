@@ -1,4 +1,5 @@
 import menus
+from utils import email_validation
 from functions import (
     borrow_book,
     add_author,
@@ -7,6 +8,8 @@ from functions import (
     list_of_books,
     update_book,
     delete_book,
+    list_of_borrowers,
+    add_borrower,
     )
 
 
@@ -28,7 +31,7 @@ def main():
             list_of_author()
 
         elif option ==5:
-            print("List of borrowers")
+            list_of_borrowers()
 
         elif option==6:
             print("search book")
@@ -70,13 +73,18 @@ def main():
             add_author(name)
                
         elif option ==9:
-            print("add a new borrower")
+            name=input("Enter Borrower Name:")
+            while True:
+                email=input("Enter valid Email:")
+                if email_validation(email):
+                    add_borrower(name,email)
+                    break
 
         elif option==0:
             break 
         else:
             print("Invalid selection!!")
 
-        print('``````````````````````````````````````````````')
+    
 
 main()

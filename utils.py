@@ -1,4 +1,5 @@
 from prettytable import PrettyTable 
+import re
 
 #print message
 def message(text,_type):
@@ -32,3 +33,8 @@ def output_table(caption,column_list,data,cursor=None):
         else:
             table.add_row(row)
     print(table)
+
+
+def email_validation(email):
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return re.match(pattern,email) is not None

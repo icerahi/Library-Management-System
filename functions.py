@@ -115,8 +115,30 @@ def list_of_author():
 
 
 
+
+def add_borrower(name,email):
+    conn=connect_to_db()
+    cursor=conn.cursor()
+    try:
+        cursor.execute("INSERT INTO BORROWER (name,email) VALUES(?,?)",(name,email))
+        conn.commit()
+        message(f"ID-{cursor.lastrowid},Name-{name}, Email-{email} added!","success")
+    except Exception as e:
+        conn.rollback()
+        message(e,"fail")
+    conn.close()
+
 def list_of_borrowers():
-    pass 
+    conn=connect_to_db()
+    cursor=conn.cursor()
+    try:
+        cursor.execute("SELECT * FROM BORROWER")
+        borrower_list=cursor.fetchall()
+        output_table("List of Borrower",["ID","Name","Email"],borrower_list)
+    except Exception as e:
+            print(e)
+    conn.close()
+
 
 def search_book():
     pass 
@@ -125,5 +147,3 @@ def search_book():
 
 
 
-def add_borrower():
-    pass
