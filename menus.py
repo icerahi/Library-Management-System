@@ -8,7 +8,7 @@ MENU="""
 |  3.Return Book                      |
 |  4.List of Books                    |
 |  5.List of Author                   |
-|  6.List of Borrowers()              |
+|  6.List of Borrowers                |
 |  7.Search Book                      |
 |                                     |
 |  ***Manage***                       |

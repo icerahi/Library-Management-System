@@ -184,6 +184,10 @@ def add_borrower(name,email):
         message(e,"fail")
     conn.close()
 
+# cursor.execute("""SELECT BORROW_RECORD.id,BOOKS.id AS book_id,BOOKS.title as book_title,
+#         BORROWER.id as borrower_id,BORROWER.name as borrower_name,borrow_date,return_date 
+#         FROM BORROW_RECORD INNER JOIN BOOKS ON BORROW_RECORD.book_id=BOOKS.id 
+#         INNER JOIN BORROWER ON BORROWER.id=BORROW_RECORD.borrower_id""")
 def list_of_borrowers():
     conn=connect_to_db()
     cursor=conn.cursor()
