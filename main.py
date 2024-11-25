@@ -11,6 +11,7 @@ from functions import (
     list_of_borrowers,
     add_borrower,
     borrow_records,
+    return_book,
     )
 
 
@@ -21,13 +22,14 @@ def main():
 
         if option ==1:
             borrow_records()
-            
+
         elif option == 2 :
             book_id=int(input("Enter the book ID want to Borrow:"))
             borrower_id=int(input("Enter the Borrower ID:"))
             borrow_book(book_id,borrower_id)
         elif option == 3 :
-            print("Return Book")
+            id=int(input("Enter Borrow Record ID: "))
+            return_book(id)
         elif option ==4:
             list_of_books()
         

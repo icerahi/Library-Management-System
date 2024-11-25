@@ -2,23 +2,26 @@ from database import connect_to_db
 import datetime
 from utils import message, output_table
 
+def now():
+    return datetime.datetime.now().strftime("%y-%m-%d %H:%M:%S")
 
 def borrow_records():
     conn= connect_to_db()
     cursor=conn.cursor()
     try:
-        cursor.execute("""SELECT BOOKS.id AS book_id,BOOKS.title as book_title,
+        cursor.execute("""SELECT BORROW_RECORD.id,BOOKS.id AS book_id,BOOKS.title as book_title,
         BORROWER.id as borrower_id,BORROWER.name as borrower_name,borrow_date,return_date 
         FROM BORROW_RECORD INNER JOIN BOOKS ON BORROW_RECORD.book_id=BOOKS.id 
         INNER JOIN BORROWER ON BORROWER.id=BORROW_RECORD.borrower_id""")
         borrow_records=cursor.fetchall()
 
         output_table("Borrow Records",
-        ["Book ID", "BOOK Title","Borrower ID","Borrower Name","Borrow Date","Return Date"],borrow_records)
+        ["ID","Book ID", "BOOK Title","Borrower ID","Borrower Name","Borrow Date","Return Date"],borrow_records)
        
     except Exception as e:
         print(e)
         message(e,"fail")
+    conn.close()
 
 def borrow_book(book_id,borrower_id):
     conn=connect_to_db()
@@ -29,7 +32,7 @@ def borrow_book(book_id,borrower_id):
 
         if book[0]>0:
             cursor.execute("INSERT INTO BORROW_RECORD (book_id,borrower_id,borrow_date) VALUES(?,?,?)",(
-                    book_id,borrower_id,datetime.datetime.now().strftime("%y-%m-%d %H:%M:%S")
+                    book_id,borrower_id,now()
                 ))
             
             cursor.execute("UPDATE BOOKS SET COPIES=? WHERE ID=?",(book[0]-1,book_id))
@@ -47,10 +50,19 @@ def borrow_book(book_id,borrower_id):
         message(f"{e},Book id or borrower id not exist!","fail")
     conn.close()
 
-def return_book():
-    pass
+def return_book(id):
+    conn=connect_to_db()
+    cursor=conn.cursor()
+    try:
+        cursor.execute("UPDATE BORROW_RECORD SET return_date=? WHERE id=?",(now(),id))
+        # cursor.execute("UPDATE BOOKS SET COPIES=? WHERE ID=?",(book[0]+1,book_id))
+        conn.commit()
+        message(f"Borrow record ID-{id},return the book at {now()}","Sucess")
+    except Exception as e:
+    
+        message(e,"fail")
 
-
+    conn.close()
 #manage book
 def add_book(title,genre,author_id,copies):
     conn=connect_to_db()
