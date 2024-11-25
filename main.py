@@ -10,6 +10,7 @@ from functions import (
     delete_book,
     list_of_borrowers,
     add_borrower,
+    borrow_records,
     )
 
 
@@ -18,25 +19,28 @@ def main():
         print(menus.MENU)
         option=int(input())
 
-        if option == 1 :
-            book_id=int(input())
-            borrow_book(1,1)
-            print ("Borrow Book")
+        if option ==1:
+            borrow_records()
+            
         elif option == 2 :
+            book_id=int(input("Enter the book ID want to Borrow:"))
+            borrower_id=int(input("Enter the Borrower ID:"))
+            borrow_book(book_id,borrower_id)
+        elif option == 3 :
             print("Return Book")
-        elif option ==3:
+        elif option ==4:
             list_of_books()
         
-        elif option==4:
+        elif option==5:
             list_of_author()
 
-        elif option ==5:
+        elif option ==6:
             list_of_borrowers()
 
-        elif option==6:
+        elif option==7:
             print("search book")
 
-        elif option == 7:
+        elif option == 8:
             while True:
                 option=int(input(menus.SUB_MENU_MANAGE_BOOK))
                 if option ==1:
@@ -67,12 +71,12 @@ def main():
                     print("Invalid choice!")
                 print("_____________________________")
 
-        elif option ==8:
+        elif option ==9:
            
             name= str(input("Enter an Author Name or List:"))
             add_author(name)
                
-        elif option ==9:
+        elif option ==10:
             name=input("Enter Borrower Name:")
             while True:
                 email=input("Enter valid Email:")

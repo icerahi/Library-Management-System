@@ -3,15 +3,45 @@ import datetime
 from utils import message, output_table
 
 
+def borrow_records():
+    conn= connect_to_db()
+    cursor=conn.cursor()
+    try:
+        cursor.execute("""SELECT BOOKS.id AS book_id,BOOKS.title as book_title,
+        BORROWER.id as borrower_id,BORROWER.name as borrower_name,borrow_date,return_date 
+        FROM BORROW_RECORD INNER JOIN BOOKS ON BORROW_RECORD.book_id=BOOKS.id 
+        INNER JOIN BORROWER ON BORROWER.id=BORROW_RECORD.borrower_id""")
+        borrow_records=cursor.fetchall()
+
+        output_table("Borrow Records",
+        ["Book ID", "BOOK Title","Borrower ID","Borrower Name","Borrow Date","Return Date"],borrow_records)
+       
+    except Exception as e:
+        print(e)
+        message(e,"fail")
 
 def borrow_book(book_id,borrower_id):
     conn=connect_to_db()
     cursor=conn.cursor()
     try:
-        cursor.execute("INSERT INTO BORROW_RECORD (book_id,borrower_id,borrow_date) VALUES(?,?,?)",(
-                book_id,borrower_id,datetime.datetime.now().strftime("%y-%m-%d %H:%M:%S")
-            ))
-        conn.commit()
+        cursor.execute("SELECT copies,title FROM BOOKS WHERE ID=?",(book_id,))
+        book=cursor.fetchone()
+
+        if book[0]>0:
+            cursor.execute("INSERT INTO BORROW_RECORD (book_id,borrower_id,borrow_date) VALUES(?,?,?)",(
+                    book_id,borrower_id,datetime.datetime.now().strftime("%y-%m-%d %H:%M:%S")
+                ))
+            
+            cursor.execute("UPDATE BOOKS SET COPIES=? WHERE ID=?",(book[0]-1,book_id))
+
+            message(f"""Borrower #{borrower_id} borrowed book-{book_id,book[1]}.\n 
+            Only {book[0]-1} copies left of this book""","success")
+
+            conn.commit()
+
+        else:
+            message(f"Book '{book[1]}' not available right now!","success")
+
     except Exception as e:
         conn.rollback()
         message(f"{e},Book id or borrower id not exist!","fail")
@@ -42,11 +72,21 @@ def list_of_books():
     conn=connect_to_db()
     cursor=conn.cursor()
     try:
-        cursor.execute("SELECT * FROM BOOKS")
+        cursor.execute("""SELECT 
+        BOOKS.id,
+        BOOKS.title,
+        BOOKS.genre,
+        BOOKS.copies,
+        AUTHOR.id AS author_id,
+        AUTHOR.name as author_name 
+        FROM BOOKS INNER JOIN AUTHOR ON AUTHOR.id=BOOKS.author_id""")
+
         books_list=cursor.fetchall()
-   
-        output_table("List of Books",["ID","Title","Genre","Author ID|Name","Available Copies"],
-        books_list,cursor)
+        output_table("List of Books",["ID","Title","Genre","Available Copies","Author ID","Author Name"],
+        books_list)
+
+        
+
         
 
     except Exception as e:
