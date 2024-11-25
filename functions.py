@@ -172,8 +172,6 @@ def list_of_author():
     conn.close()
 
 
-
-
 def add_borrower(name,email):
     conn=connect_to_db()
     cursor=conn.cursor()
@@ -199,13 +197,21 @@ def list_of_borrowers():
 
 
 def search_book(book_title_author_name):
+    search_pattern=f"%{book_title_author_name}%"
     conn=connect_to_db()
     cursor=conn.cursor()
     try:
-        cursor.execute("SELECT *,AUTHOR.ID as author_id,AUTHOR.name as author_name FROM BOOKS WHERE title LIKE ?",(f"%{book_title_author_name}%",))
+        cursor.execute("""SELECT 
+        BOOKS.id,
+        BOOKS.title,
+        BOOKS.genre,
+        BOOKS.copies,
+        AUTHOR.id AS author_id,
+        AUTHOR.name as author_name 
+        FROM BOOKS INNER JOIN AUTHOR ON AUTHOR.id=BOOKS.author_id 
+        WHERE BOOKS.title LIKE ? OR AUTHOR.name LIKE ?""",(search_pattern,search_pattern))
         results=cursor.fetchall()
-        for result in results:
-            print(result)
+        output_table("Results",["ID","Title","Genre","Copies","Author ID","Author Name"],results)
     except Exception as e:
         print(e)
     
