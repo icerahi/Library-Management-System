@@ -12,6 +12,7 @@ from functions import (
     add_borrower,
     borrow_records,
     return_book,
+    search_book,
     )
 
 
@@ -40,7 +41,8 @@ def main():
             list_of_borrowers()
 
         elif option==7:
-            print("search book")
+            book_title_author_name=input("Search by book title or Author name:")
+            search_book(book_title_author_name)
 
         elif option == 8:
             while True:

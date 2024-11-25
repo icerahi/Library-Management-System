@@ -70,7 +70,6 @@ def return_book(id):
             message(f"The book already returned!","Success")
 
     except Exception as e:
-    
         message(e,"fail")
 
     conn.close()
@@ -107,10 +106,6 @@ def list_of_books():
         books_list=cursor.fetchall()
         output_table("List of Books",["ID","Title","Genre","Available Copies","Author ID","Author Name"],
         books_list)
-
-        
-
-        
 
     except Exception as e:
         print(e)
@@ -203,8 +198,17 @@ def list_of_borrowers():
     conn.close()
 
 
-def search_book():
-    pass 
+def search_book(book_title_author_name):
+    conn=connect_to_db()
+    cursor=conn.cursor()
+    try:
+        cursor.execute("SELECT *,AUTHOR.ID as author_id,AUTHOR.name as author_name FROM BOOKS WHERE title LIKE ?",(f"%{book_title_author_name}%",))
+        results=cursor.fetchall()
+        for result in results:
+            print(result)
+    except Exception as e:
+        print(e)
+    
 
 
 
