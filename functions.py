@@ -54,10 +54,21 @@ def return_book(id):
     conn=connect_to_db()
     cursor=conn.cursor()
     try:
-        cursor.execute("UPDATE BORROW_RECORD SET return_date=? WHERE id=?",(now(),id))
-        # cursor.execute("UPDATE BOOKS SET COPIES=? WHERE ID=?",(book[0]+1,book_id))
-        conn.commit()
-        message(f"Borrow record ID-{id},return the book at {now()}","Sucess")
+        cursor.execute('SELECT return_date from BORROW_RECORD WHERE id=?',(id,))
+
+        if cursor.fetchone()[0] ==None:
+            cursor.execute("UPDATE BORROW_RECORD SET return_date=? WHERE id=?",(now(),id))
+            cursor.execute("SELECT book_id FROM BORROW_RECORD WHERE id=?",(id,))
+            book_id=cursor.fetchone()[0]
+            cursor.execute("SELECT copies FROM BOOKS WHERE id=?",(book_id,))
+            book_copies=cursor.fetchone()[0]
+        
+            cursor.execute("UPDATE BOOKS SET COPIES=? WHERE ID=?",(book_copies+1,book_id))
+            conn.commit()
+            message(f"Borrow record ID-{id},return the book at {now()}","Success")
+        else:
+            message(f"The book already returned!","Success")
+
     except Exception as e:
     
         message(e,"fail")
